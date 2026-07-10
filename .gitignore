@@ -1,0 +1,92 @@
+# System files
+
+.DS_Store
+Thumbs.db
+
+# Python
+
+**pycache**/
+*.py[cod]
+*.pyd
+*.so
+
+# Virtual environments
+
+venv/
+.venv/
+env/
+ENV/
+
+# Jupyter / notebooks
+
+.ipynb_checkpoints/
+
+# Environment files / secrets
+
+.env
+.env.*
+*.env
+secrets.json
+config.local.json
+*.key
+*.pem
+
+# Package/build artifacts
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing / coverage
+
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDEs / editors
+
+.vscode/
+.idea/
+*.swp
+
+# Logs
+
+*.log
+logs/
+
+# AI / GenAI local artifacts
+
+output/
+outputs/
+results/
+artifacts/
+.cache/
+huggingface/
+models/
+checkpoints/
+vectorstore/
+vector_store/
+faiss_index/
+chromadb/
+
+# Ollama / local LLM data
+
+ollama/
+ollama_data/
+
+# Temporary files
+
+*.tmp
+*.temp
+*.bak
+
+# Node.js
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
