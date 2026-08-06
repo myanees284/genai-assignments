@@ -1,0 +1,144 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -608,
+        304
+      ],
+      "id": "4b141358-74c7-4ba2-9f32-a5c171b1bcf8",
+      "name": "When chat message received",
+      "webhookId": "167578a3-3da5-444b-a85a-76b7b2692939"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/files/Brochure.pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        -384,
+        304
+      ],
+      "id": "1526f1fa-806f-4ec9-8f79-9a8e60714a85",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -160,
+        304
+      ],
+      "id": "e7879e6a-225f-4ce0-a12b-2ba7ac8987cc",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}\n",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an AI-powered Document Question Answering assistant.\n\nAnswer ONLY using the document below.\n\nDocument:\n{{ $('Extract from File').item.json.text }}\n\nRules:\n- Use only the document.\n- Never use outside knowledge.\n- If the answer cannot be found in the document, reply exactly: \"I couldn't find that information in the uploaded document.\"\n- Keep answers concise.\n"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        64,
+        304
+      ],
+      "id": "43c87aaf-3a90-482f-9777-23c62f4120cf",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        136,
+        536
+      ],
+      "id": "a22d12ce-cea5-4495-98a9-7f9b75ac6b98",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "CWYD67V3uh4HqClI",
+          "name": "Groq account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        []
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "152b9f89584cce320c1894ee4fba18c655853a58c001f07fe124bf957caf272a"
+  }
+}
